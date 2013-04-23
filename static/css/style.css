@@ -180,6 +180,9 @@ ul#receiver li strong.ans{
 ul#receiver li.unset{
     background: #f1c40f;
 }
+ul#receiver li.voted{
+    background: #3498db;
+}
 ul#receiver li.set{
     background: #2ecc71;
 }
@@ -293,91 +296,264 @@ ul#receiver li.selected{
     *zoom: 1;
 }
 
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
+.animated{-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;-ms-animation-fill-mode:both;-o-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-duration:1s;-moz-animation-duration:1s;-ms-animation-duration:1s;-o-animation-duration:1s;animation-duration:1s;}.animated.hinge{-webkit-animation-duration:2s;-moz-animation-duration:2s;-ms-animation-duration:2s;-o-animation-duration:2s;animation-duration:2s;}@-webkit-keyframes pulse {
+    0% { -webkit-transform: scale(1); } 50% { -webkit-transform: scale(1.1); }
+    100% { -webkit-transform: scale(1); }
+}
+@-moz-keyframes pulse {
+    0% { -moz-transform: scale(1); }    
+    50% { -moz-transform: scale(1.1); }
+    100% { -moz-transform: scale(1); }
+}
+@-o-keyframes pulse {
+    0% { -o-transform: scale(1); }  
+    50% { -o-transform: scale(1.1); }
+    100% { -o-transform: scale(1); }
+}
+@keyframes pulse {
+    0% { transform: scale(1); } 
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
-@media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
+.pulse {
+    -webkit-animation-name: pulse;
+    -moz-animation-name: pulse;
+    -o-animation-name: pulse;
+    animation-name: pulse;
 }
 
-/* ==========================================================================
-   Print styles.
-   Inlined to avoid required HTTP connection: h5bp.com/r
-   ========================================================================== */
+@-moz-keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {-moz-transform: translateY(0);}
+    40% {-moz-transform: translateY(-30px);}
+    60% {-moz-transform: translateY(-15px);}
+}
 
-@media print {
-    * {
-        background: transparent !important;
-        color: #000 !important; /* Black prints faster: h5bp.com/s */
-        box-shadow: none !important;
-        text-shadow: none !important;
+@-o-keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {-o-transform: translateY(0);}
+    40% {-o-transform: translateY(-30px);}
+    60% {-o-transform: translateY(-15px);}
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-30px);}
+    60% {transform: translateY(-15px);}
+}
+
+.bounce {
+    -webkit-animation-name: bounce;
+    -moz-animation-name: bounce;
+    -o-animation-name: bounce;
+    animation-name: bounce;
+}
+
+@-webkit-keyframes bounceIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(.3);
     }
-
-    a,
-    a:visited {
-        text-decoration: underline;
+    
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(1.05);
     }
-
-    a[href]:after {
-        content: " (" attr(href) ")";
+    
+    70% {
+        -webkit-transform: scale(.9);
     }
-
-    abbr[title]:after {
-        content: " (" attr(title) ")";
+    
+    100% {
+        -webkit-transform: scale(1);
     }
+}
 
-    /*
-     * Don't show links for images, or javascript/internal links
-     */
-
-    .ir a:after,
-    a[href^="javascript:"]:after,
-    a[href^="#"]:after {
-        content: "";
+@-moz-keyframes bounceIn {
+    0% {
+        opacity: 0;
+        -moz-transform: scale(.3);
     }
-
-    pre,
-    blockquote {
-        border: 1px solid #999;
-        page-break-inside: avoid;
+    
+    50% {
+        opacity: 1;
+        -moz-transform: scale(1.05);
     }
-
-    thead {
-        display: table-header-group; /* h5bp.com/t */
+    
+    70% {
+        -moz-transform: scale(.9);
     }
-
-    tr,
-    img {
-        page-break-inside: avoid;
+    
+    100% {
+        -moz-transform: scale(1);
     }
+}
 
-    img {
-        max-width: 100% !important;
+@-o-keyframes bounceIn {
+    0% {
+        opacity: 0;
+        -o-transform: scale(.3);
     }
+    
+    50% {
+        opacity: 1;
+        -o-transform: scale(1.05);
+    }
+    
+    70% {
+        -o-transform: scale(.9);
+    }
+    
+    100% {
+        -o-transform: scale(1);
+    }
+}
 
-    @page {
-        margin: 0.5cm;
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(.3);
     }
+    
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    
+    70% {
+        transform: scale(.9);
+    }
+    
+    100% {
+        transform: scale(1);
+    }
+}
 
-    p,
-    h2,
-    h3 {
-        orphans: 3;
-        widows: 3;
+.bounceIn {
+    -webkit-animation-name: bounceIn;
+    -moz-animation-name: bounceIn;
+    -o-animation-name: bounceIn;
+    animation-name: bounceIn;
+}
+@-webkit-keyframes bounceOut {
+    0% {
+        -webkit-transform: scale(1);
     }
+    
+    25% {
+        -webkit-transform: scale(.95);
+    }
+    
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(1.1);
+    }
+    
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(.3);
+    }   
+}
 
-    h2,
-    h3 {
-        page-break-after: avoid;
+@-moz-keyframes bounceOut {
+    0% {
+        -moz-transform: scale(1);
     }
+    
+    25% {
+        -moz-transform: scale(.95);
+    }
+    
+    50% {
+        opacity: 1;
+        -moz-transform: scale(1.1);
+    }
+    
+    100% {
+        opacity: 0;
+        -moz-transform: scale(.3);
+    }   
+}
+
+@-o-keyframes bounceOut {
+    0% {
+        -o-transform: scale(1);
+    }
+    
+    25% {
+        -o-transform: scale(.95);
+    }
+    
+    50% {
+        opacity: 1;
+        -o-transform: scale(1.1);
+    }
+    
+    100% {
+        opacity: 0;
+        -o-transform: scale(.3);
+    }   
+}
+
+@keyframes bounceOut {
+    0% {
+        transform: scale(1);
+    }
+    
+    25% {
+        transform: scale(.95);
+    }
+    
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    
+    100% {
+        opacity: 0;
+        transform: scale(.3);
+    }   
+}
+
+.bounceOut {
+    -webkit-animation-name: bounceOut;
+    -moz-animation-name: bounceOut;
+    -o-animation-name: bounceOut;
+    animation-name: bounceOut;
+}
+@-webkit-keyframes hinge {
+    0% { -webkit-transform: rotate(0); -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; }    
+    20%, 60% { -webkit-transform: rotate(80deg); -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; }  
+    40% { -webkit-transform: rotate(60deg); -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; }   
+    80% { -webkit-transform: rotate(60deg) translateY(0); opacity: 1; -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; } 
+    100% { -webkit-transform: translateY(700px); opacity: 0; }
+}
+
+@-moz-keyframes hinge {
+    0% { -moz-transform: rotate(0); -moz-transform-origin: top left; -moz-animation-timing-function: ease-in-out; } 
+    20%, 60% { -moz-transform: rotate(80deg); -moz-transform-origin: top left; -moz-animation-timing-function: ease-in-out; }   
+    40% { -moz-transform: rotate(60deg); -moz-transform-origin: top left; -moz-animation-timing-function: ease-in-out; }    
+    80% { -moz-transform: rotate(60deg) translateY(0); opacity: 1; -moz-transform-origin: top left; -moz-animation-timing-function: ease-in-out; }  
+    100% { -moz-transform: translateY(700px); opacity: 0; }
+}
+
+@-o-keyframes hinge {
+    0% { -o-transform: rotate(0); -o-transform-origin: top left; -o-animation-timing-function: ease-in-out; }   
+    20%, 60% { -o-transform: rotate(80deg); -o-transform-origin: top left; -o-animation-timing-function: ease-in-out; } 
+    40% { -o-transform: rotate(60deg); -o-transform-origin: top left; -o-animation-timing-function: ease-in-out; }  
+    80% { -o-transform: rotate(60deg) translateY(0); opacity: 1; -o-transform-origin: top left; -o-animation-timing-function: ease-in-out; }    
+    100% { -o-transform: translateY(700px); opacity: 0; }
+}
+
+@keyframes hinge {
+    0% { transform: rotate(0); transform-origin: top left; animation-timing-function: ease-in-out; }    
+    20%, 60% { transform: rotate(80deg); transform-origin: top left; animation-timing-function: ease-in-out; }  
+    40% { transform: rotate(60deg); transform-origin: top left; animation-timing-function: ease-in-out; }   
+    80% { transform: rotate(60deg) translateY(0); opacity: 1; transform-origin: top left; animation-timing-function: ease-in-out; } 
+    100% { transform: translateY(700px); opacity: 0; }
+}
+
+.hinge {
+    -webkit-animation-name: hinge;
+    -moz-animation-name: hinge;
+    -o-animation-name: hinge;
+    animation-name: hinge;
 }

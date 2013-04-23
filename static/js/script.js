@@ -93,7 +93,7 @@ function init(){
         newQuestion.votes(data.votes);
         if(data.answer) newQuestion.setAnswer(data.answer);
 
-        $('#receiver').prepend('<li class="item unset" data-id="'+newQuestion.id+'" data-count="0"><small class="name">'+newQuestion.getAuthor()+': </small>' + newQuestion.getQuestion() + '</li>');
+        $('#receiver').prepend('<li class="item unset animated bounceIn" data-id="'+newQuestion.id+'" data-count="0"><small class="name">'+newQuestion.getAuthor()+': </small>' + newQuestion.getQuestion() + '</li>');
         newQuestion.dom = $('li.item[data-id="'+data.id+'"]');
         newQuestion.dom.attr("data-count", newQuestion.getVotes);
 
@@ -121,7 +121,10 @@ function init(){
 
         selectedQuestion.setAnswer(data.answer);
 
-       selectedQuestion.dom.removeClass('unset').addClass('set');
+       selectedQuestion.dom.removeClass('unset').addClass('set bounce').delay(1000).queue(function(next){
+            $(this).removeClass('bounce');
+            next();
+        });;
        selectedQuestion.dom.append("<strong class='ans'>Matt: "+data.answer+"</strong>");
     }
 
@@ -139,7 +142,10 @@ function init(){
             return;
         }
 
-        removeQuestion.dom.remove();
+        removeQuestion.dom.addClass('hinge').delay(1000).queue(function(next){
+            $(this).remove();
+            next();
+        });
 
         // Remove person from people array
         questions.splice(questions.indexOf(removeQuestion), 1);
@@ -162,6 +168,10 @@ function init(){
 
         setQuestion.setVotes();
 
+        setQuestion.dom.removeClass('bounceIn').addClass('pulse').delay(1000).queue(function(next){
+            $(this).removeClass("pulse");
+            next();
+        });;
         setQuestion.dom.attr("data-count", setQuestion.getVotes);
     }
 
@@ -192,7 +202,10 @@ function init(){
     $(document).on("mousedown", ".item", function(event) {
         switch (event.which) {
             case 1:
-                socket.emit('set vote', {id:$(this).data("id")});
+                if(!$(this).attr("data-voted")){
+                    socket.emit('set vote', {id:$(this).data("id")});
+                    $(this).attr('data-voted', 1).addClass('voted');
+                }
                 break;
             default:
                 console.log("Invalid Mouse");
