@@ -1,0 +1,25 @@
+{
+  "name": "askmattfor.info",
+  "description": "Ask Matt for Info",
+  "author": "Matthew Harrison-Jones ",
+  "version": "0.0.1-4",
+  "dependencies": {
+    "connect": "1.8.5",
+    "express": "2.5.2",
+    "jade": "0.20.0",
+    "socket.io": "0.8.7",
+    "crypto": "0.0.3"
+  },
+  "engine": "node >= 0.6.6",
+  "subdomain": "askmattfor",
+  "domains": [
+    "askmattfor.info",
+    "www.askmattfor.info"
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}

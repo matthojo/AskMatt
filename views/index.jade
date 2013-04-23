@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    div(class='namerequest')
+        input(id='name', type="text", placeholder="What Is Your Name?")
+    div(class="hidden")
+        div(class='question_holder')
+            span(class='progress')
+            input(id='question', type="text", placeholder="Ask a question")
+        ul(id='receiver')
+    div
+        p.center made by 
+            a(href='http://matthojo.co.uk') Matthew Harrison-Jones
+            |  with node.js and socket.io.
