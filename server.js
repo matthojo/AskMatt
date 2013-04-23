@@ -82,6 +82,9 @@ function onSocketConnection(client) {
 
   // Listen for remove question message
   client.on("remove question", onRemoveQuestion);
+
+  // Listen for set vote message
+  client.on("set vote", onSetVote);
 }
 
 /********************
@@ -132,7 +135,7 @@ function onNewPerson(data) {
    for (i = 0; i < questions.length; i++) {
        existingQuestions = questions[i];
        util.log("Question sent: "+existingQuestions.getQuestion());
-       this.emit("new question", {id: existingQuestions.id, question: existingQuestions.getQuestion(), author: existingQuestions.getAuthor(), answer: existingQuestions.getAnswer()});
+       this.emit("new question", {id: existingQuestions.id, question: existingQuestions.getQuestion(), author: existingQuestions.getAuthor(), answer: existingQuestions.getAnswer(), votes: existingQuestions.getVotes()});
    }
 
   // Add new person to the people array
@@ -149,11 +152,12 @@ function onNewQuestion(data) {
     var author = personById(this.id);
     var newQuestion = new Question(data.question, author.getName());
     newQuestion.id = hash;
+    newQuestion.votes(0);
 
     // Broadcast new question to connected socket clients
-    this.broadcast.emit("new question", {id: newQuestion.id, question: newQuestion.getQuestion(), author: newQuestion.getAuthor()});
+    this.broadcast.emit("new question", {id: newQuestion.id, question: newQuestion.getQuestion(), author: newQuestion.getAuthor(), votes: newQuestion.getVotes()});
 
-    this.emit("new question", {id: newQuestion.id, question: newQuestion.getQuestion(), author: newQuestion.getAuthor()});
+    this.emit("new question", {id: newQuestion.id, question: newQuestion.getQuestion(), author: newQuestion.getAuthor(), votes: newQuestion.getVotes()});
 
 
     // Add new person to the people array
@@ -182,7 +186,7 @@ function onNewAnswer(data) {
     this.emit("new answer", {id: data.id, answer: data.answer});
 }
 
-// Socket client has disconnected
+// Remove Question
 function onRemoveQuestion(id) {
     util.log("Question removed: "+id);
 
@@ -201,6 +205,26 @@ function onRemoveQuestion(id) {
     this.broadcast.emit("remove question", {id: id});
 
     this.emit("remove question", {id: id});
+}
+
+// Vote Question
+function onSetVote(data) {
+    util.log("Question votes: "+data.id);
+
+    var setQuestion = QuestionById(data.id);
+
+    // person not found
+    if (!setQuestion) {
+        util.log("Question not found: "+data.id);
+        return;
+    }
+
+    setQuestion.setVotes();
+
+    // Broadcast removed person to connected socket clients
+    this.broadcast.emit("set vote", {id: data.id});
+
+    this.emit("set vote", {id: data.id});
 }
 
 /********************

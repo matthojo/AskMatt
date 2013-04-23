@@ -51,6 +51,9 @@ function init(){
         socket.on("remove person", onRemovePerson);
 
         socket.on("remove question", onRemoveQuestion);
+
+        // Listen for set vote message
+        socket.on("set vote", onSetVote);
     };
 
     setEventHandlers();
@@ -87,11 +90,13 @@ function init(){
         // Initialise the new person
         var newQuestion = new Question(data.question, data.author);
         newQuestion.id = data.id;
+        newQuestion.votes(data.votes);
         if(data.answer) newQuestion.setAnswer(data.answer);
 
-        $('#receiver').prepend('<li class="item unset" data-id="'+newQuestion.id+'"><small class="name">'+newQuestion.getAuthor()+': </small>' + newQuestion.getQuestion() + '</li>');
-
+        $('#receiver').prepend('<li class="item unset" data-id="'+newQuestion.id+'" data-count="0"><small class="name">'+newQuestion.getAuthor()+': </small>' + newQuestion.getQuestion() + '</li>');
         newQuestion.dom = $('li.item[data-id="'+data.id+'"]');
+        newQuestion.dom.attr("data-count", newQuestion.getVotes);
+
 
         if(newQuestion.getAnswer()){
             newQuestion.dom.removeClass('unset').addClass('set');
@@ -143,6 +148,23 @@ function init(){
 
     }
 
+    // Vote Question
+    function onSetVote(data) {
+        console.log("Question votes: "+data.id);
+
+        var setQuestion = QuestionById(data.id);
+
+        // person not found
+        if (!setQuestion) {
+            console.log("Question not found: "+data.id);
+            return;
+        }
+
+        setQuestion.setVotes();
+
+        setQuestion.dom.attr("data-count", setQuestion.getVotes);
+    }
+
     // Remove person
     function onRemovePerson(data) {
         var removePerson = personById(data.id);
@@ -166,6 +188,16 @@ function init(){
         if(progress <= 100) $('.progress').width(progress+"%");
 
     }
+
+    $(document).on("mousedown", ".item", function(event) {
+        switch (event.which) {
+            case 1:
+                socket.emit('set vote', {id:$(this).data("id")});
+                break;
+            default:
+                console.log("Invalid Mouse");
+        }
+    });
 }
 // Find person by ID
 function personById(id) {
@@ -184,6 +216,7 @@ function QuestionById(id) {
     }
     return false;
 }
+
 $(document).ready(function() {
 
     $("#name").fitText();
@@ -196,3 +229,4 @@ $(document).ready(function() {
         }
     });
 });
+

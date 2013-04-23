@@ -157,6 +157,7 @@ a, a:visited{
     transition: width 500ms linear;
 }
 ul#receiver li{
+    position: relative;
     display: inline-block;
     font-size: 15px;
     text-align: center;
@@ -165,6 +166,13 @@ ul#receiver li{
     padding: 20px;
     border-radius: 7px;
     color: #ffffff;
+}
+ul#receiver li:before {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    content: attr(data-count);
+    font-size: 12px;
 }
 ul#receiver li strong.ans{
     display: block;

@@ -7,6 +7,7 @@ var Question = function(question, author) {
     var question = question,
         author = author,
         answer,
+        votes = 0,
         id;
 
     // Getters and setters
@@ -30,6 +31,19 @@ var Question = function(question, author) {
         return answer;
     };
 
+    var setVotes = function() {
+        votes++;
+    };
+
+    var getVotes = function() {
+        return votes;
+    };
+
+    var votes = function(v){
+        votes = v;
+    };
+
+
     // Make privates public.
     return {
         getQuestion: getQuestion,
@@ -37,6 +51,9 @@ var Question = function(question, author) {
         getAuthor: getAuthor,
         setAnswer: setAnswer,
         getAnswer: getAnswer,
+        votes: votes,
+        setVotes: setVotes,
+        getVotes: getVotes,
         id: id
     }
 };

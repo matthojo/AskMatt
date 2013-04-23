@@ -7,23 +7,43 @@ $(document).ready(function() {
 
 var selected_question;
 
-$(document).on("click", ".item", function() {
-  selected_question = $(this).data("id");
+$(document).on("mousedown", ".item", function(event) {
+    switch (event.which) {
+        case 3:
+            selected_question = $(this).data("id");
 
-  question = QuestionById(selected_question);
+            question = QuestionById(selected_question);
 
-  // Person not found
-  if (!question) {
-    console.log("Question not found: "+id);
-    return;
-  }else{
-    console.log("Selected:"+ question.getQuestion());
-  }
+            // Person not found
+            if (!question) {
+              console.log("Question not found: "+id);
+              return;
+            }else{
+              console.log("Selected:"+ question.getQuestion());
+            }
 
-  $("li.item.selected").removeClass('selected');
-  question.dom.addClass('selected');
-  $("#answer").removeClass('inactive');
-});  
+            $("li.item.selected").removeClass('selected');
+            question.dom.addClass('selected');
+            $("#answer").removeClass('inactive');
+            break;
+        default:
+            selected_question = $(this).data("id");
+
+            question = QuestionById(selected_question);
+
+            // Person not found
+            if (!question) {
+              console.log("Question not found: "+id);
+              return;
+            }else{
+              console.log("Selected:"+ question.getQuestion());
+            }
+
+            $("li.item.selected").removeClass('selected');
+            question.dom.addClass('selected');
+            $("#answer").removeClass('inactive');
+    }
+}); 
 
 $(document).on("dblclick", ".item", function() {
   socket.emit('remove question', $(this).data("id"));
