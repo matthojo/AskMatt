@@ -93,7 +93,11 @@ function init(){
         newQuestion.votes(data.votes);
         if(data.answer) newQuestion.setAnswer(data.answer);
 
-        $('#receiver').prepend('<li class="item unset animated bounceIn" data-id="'+newQuestion.id+'" data-count="0"><small class="name">'+newQuestion.getAuthor()+': </small>' + newQuestion.getQuestion() + '</li>');
+        var questionSan = $($.parseHTML(newQuestion.getQuestion())).text();
+        console.log(questionSan);
+        var authorSan = $($.parseHTML(newQuestion.getAuthor())).text();
+        console.log(authorSan);
+        $('#receiver').prepend('<li class="item unset animated bounceIn" data-id="'+newQuestion.id+'" data-count="0"><small class="name">'+authorSan+': </small>' + questionSan + '</li>');
         newQuestion.dom = $('li.item[data-id="'+data.id+'"]');
         newQuestion.dom.attr("data-count", newQuestion.getVotes);
 
