@@ -2,7 +2,7 @@
   "name": "askmattfor.info",
   "description": "Ask Matt for Info",
   "author": "Matthew Harrison-Jones ",
-  "version": "0.0.1-11",
+  "version": "0.0.1-12",
   "dependencies": {
     "connect": "1.8.5",
     "express": "2.5.2",
