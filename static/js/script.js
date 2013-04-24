@@ -94,9 +94,7 @@ function init(){
         if(data.answer) newQuestion.setAnswer(data.answer);
 
         var questionSan = $($.parseHTML(newQuestion.getQuestion())).text();
-        console.log(questionSan);
         var authorSan = $($.parseHTML(newQuestion.getAuthor())).text();
-        console.log(authorSan);
         $('#receiver').prepend('<li class="item unset animated bounceIn" data-id="'+newQuestion.id+'" data-count="0"><small class="name">'+authorSan+': </small>' + questionSan + '</li>');
         newQuestion.dom = $('li.item[data-id="'+data.id+'"]');
         newQuestion.dom.attr("data-count", newQuestion.getVotes);
