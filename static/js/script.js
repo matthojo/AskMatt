@@ -142,7 +142,7 @@ function init(){
             return;
         }
 
-        removeQuestion.dom.addClass('hinge').delay(1000).queue(function(next){
+        removeQuestion.dom.addClass('hinge').delay(1200).queue(function(next){
             $(this).remove();
             next();
         });

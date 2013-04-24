@@ -178,7 +178,7 @@ ul#receiver li strong.ans{
     display: block;
 }
 ul#receiver li.unset{
-    background: #f1c40f;
+    background: #34495e;
 }
 ul#receiver li.voted{
     background: #3498db;
