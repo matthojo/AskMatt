@@ -4,13 +4,13 @@
   "author": "Matthew Harrison-Jones ",
   "version": "0.0.2",
   "dependencies": {
-    "body-parser": "^1.9.2",
-    "connect": "^3.3.3",
+    "body-parser": "1.9.2",
+    "connect": "3.3.3",
     "crypto": "0.0.3",
     "express": "4.10.2",
     "http": "0.0.0",
-    "jade": "^1.7.0",
-    "socket.io": "^1.2.0"
+    "jade": "1.7.0",
+    "socket.io": "1.2.0"
   },
   "subdomain": "askmatt",
   "domains": [
