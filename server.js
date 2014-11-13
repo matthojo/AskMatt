@@ -212,9 +212,9 @@ function onNewAnswer(data) {
 
     var selectedQuestion = QuestionById(data.id);
 
-    // person not found
+    // question not found
     if (!selectedQuestion) {
-        util.log("Question not found: "+id);
+        util.log("Question not found: "+data.id);
         return;
     }
 
