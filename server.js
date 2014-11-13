@@ -7,47 +7,88 @@
 // Dependencies
 var connect = require('connect'),
     express = require('express'),
+    http = require('http'),
     crypto = require('crypto'),
     io = require('socket.io'),
-    util = require("util"),
+    util = require('util'),
     port = (process.env.PORT || 8081),
-    Person = require("./Person").Person,
-    Question = require("./Question").Question;
+    Person = require('./Person').Person,
+    Question = require('./Question').Question,
+    bodyParser = require('body-parser');
 
 // Express
-var server = express.createServer();
-server.configure(function(){
-    server.set('views', __dirname + '/views');
-    server.set('view options', { layout: false });
-    server.use(connect.bodyParser());
-    server.use(express.cookieParser());
-    server.use(connect.static(__dirname + '/static'));
-    server.use(server.router);
+var app = express();
+app.set('views', __dirname + '/views');
+app.set('view options', { layout: false });
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+app.use(express.static(__dirname + '/static'));
+
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  if (res.status(404)) {
+      res.render('404.jade', { locals: {
+                title : '404 - Not Found'
+               ,description: ''
+               ,author: ''
+               ,analyticssiteid: 'UA-4609610-2'
+              },status: 404 });
+  } else {
+      res.render('500.jade', { locals: {
+                title : 'The Server Encountered an Error'
+               ,description: ''
+               ,author: ''
+               ,analyticssiteid: 'UA-4609610-2'
+               ,error: err
+              },status: 500 });
+  }
 });
 
-// Errors
-server.error(function(err, req, res, next){
-    if (err instanceof NotFound) {
-        res.render('404.jade', { locals: {
-                  title : '404 - Not Found'
-                 ,description: ''
-                 ,author: ''
-                 ,analyticssiteid: 'UA-4609610-2'
-                },status: 404 });
-    } else {
-        res.render('500.jade', { locals: {
-                  title : 'The Server Encountered an Error'
-                 ,description: ''
-                 ,author: ''
-                 ,analyticssiteid: 'UA-4609610-2'
-                 ,error: err
-                },status: 500 });
-    }
+/********************
+*
+* ROUTES
+*
+********************/
+
+app.get('/', function(req,res){
+  res.render('index.jade', {
+    locals : {
+              title : 'Ask Matt'
+             ,description: 'Ask Me Anything'
+             ,author: 'Matthew Harrison-Jones'
+             ,analyticssiteid: 'UA-4609610-2'
+            }
+  });
 });
-server.listen(port);
+
+// Generate new hash
+var current_date = (new Date()).valueOf().toString();
+var random = Math.random().toString();
+var hash = crypto.createHash('sha1').update(current_date + random).digest('hex');
+
+// Output hash to console
+util.log("Admin: "+hash);
+
+// A Route for the admin
+app.get('/'+hash, function(req,res){
+  res.render('admin.jade', {
+    locals : {
+              title : 'Ask Matt Admin'
+             ,description: 'Ask Me Anything'
+             ,author: 'Matthew Harrison-Jones'
+             ,analyticssiteid: 'UA-4609610-2'
+            }
+  });
+});
+
+var server =  http.createServer(app);
 
 // Socket.io
 var io = io.listen(server);
+
+server.listen(port);
 
 // Variables
 var people  = [];
@@ -249,55 +290,6 @@ function QuestionById(id) {
     }
     return false;
 }
-
-
-/********************
-*
-* ROUTES
-*
-********************/
-
-server.get('/', function(req,res){
-  res.render('index.jade', {
-    locals : {
-              title : 'Ask Matt'
-             ,description: 'Ask Me Anything'
-             ,author: 'Matthew Harrison-Jones'
-             ,analyticssiteid: 'UA-4609610-2'
-            }
-  });
-});
-
-// Generate new hash
-var current_date = (new Date()).valueOf().toString();
-var random = Math.random().toString();
-var hash = crypto.createHash('sha1').update(current_date + random).digest('hex');
-
-// Output hash to console
-util.log("Admin: "+hash);
-
-// A Route for the admin
-server.get('/'+hash, function(req,res){
-  res.render('admin.jade', {
-    locals : {
-              title : 'Ask Matt Admin'
-             ,description: 'Ask Me Anything'
-             ,author: 'Matthew Harrison-Jones'
-             ,analyticssiteid: 'UA-4609610-2'
-            }
-  });
-});
-
-
-//A Route for Creating a 500 Error (Useful to keep around)
-server.get('/500', function(req, res){
-    throw new Error('This is a 500 Error');
-});
-
-//The 404 Route (ALWAYS Keep this as the last route)
-server.get('/*', function(req, res){
-    throw new NotFound;
-});
 
 function NotFound(msg){
     this.name = 'NotFound';
