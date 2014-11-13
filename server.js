@@ -28,23 +28,23 @@ server.configure(function(){
 // Errors
 server.error(function(err, req, res, next){
     if (err instanceof NotFound) {
-        res.render('404.jade', { locals: { 
+        res.render('404.jade', { locals: {
                   title : '404 - Not Found'
                  ,description: ''
                  ,author: ''
-                 ,analyticssiteid: 'UA-4609610-2' 
+                 ,analyticssiteid: 'UA-4609610-2'
                 },status: 404 });
     } else {
-        res.render('500.jade', { locals: { 
+        res.render('500.jade', { locals: {
                   title : 'The Server Encountered an Error'
                  ,description: ''
                  ,author: ''
                  ,analyticssiteid: 'UA-4609610-2'
-                 ,error: err 
+                 ,error: err
                 },status: 500 });
     }
 });
-server.listen( port);
+server.listen(port);
 
 // Socket.io
 var io = io.listen(server);
@@ -259,11 +259,11 @@ function QuestionById(id) {
 
 server.get('/', function(req,res){
   res.render('index.jade', {
-    locals : { 
+    locals : {
               title : 'Ask Matt'
              ,description: 'Ask Me Anything'
              ,author: 'Matthew Harrison-Jones'
-             ,analyticssiteid: 'UA-4609610-2' 
+             ,analyticssiteid: 'UA-4609610-2'
             }
   });
 });
@@ -279,11 +279,11 @@ util.log("Admin: "+hash);
 // A Route for the admin
 server.get('/'+hash, function(req,res){
   res.render('admin.jade', {
-    locals : { 
+    locals : {
               title : 'Ask Matt Admin'
              ,description: 'Ask Me Anything'
              ,author: 'Matthew Harrison-Jones'
-             ,analyticssiteid: 'UA-4609610-2' 
+             ,analyticssiteid: 'UA-4609610-2'
             }
   });
 });
