@@ -256,6 +256,8 @@ function onSetVote(data) {
     // person not found
     if (!setQuestion) {
         util.log("Question not found: "+data.id);
+        // Broadcast removed person to connected socket clients
+        this.broadcast.emit("remove question", {id: data.id});
         return;
     }
 
